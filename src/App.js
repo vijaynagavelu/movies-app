@@ -1,9 +1,8 @@
 import "./styles.css";
-import { db } from "./firebase-config";
 import Pagination from './components/Pagination';
-import { Fragment, useEffect, useState, useRef } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Nav from "./Nav";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function App() {
 
@@ -11,8 +10,6 @@ export default function App() {
   const [totalPages, setTotalPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const loadingArray = [1, 2, 3, 4, 5, 6, 7, 8]
-
-  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -39,7 +36,7 @@ export default function App() {
             <Fragment key={index}>
               <div className={`outer content ${movies.length === 0 ? " display" : " hide"}`} >
                 <div className=" movieLoading">
-                  <img src={`https://retchhh.files.wordpress.com/2015/03/loading1.gif`}></img>
+                  <img alt="" src={`https://retchhh.files.wordpress.com/2015/03/loading1.gif`}></img>
                 </div>
               </div>
             </Fragment>
@@ -55,7 +52,7 @@ export default function App() {
                     <div className={movies.length === 0 ? " hide" : 'row  '}>
 
                       <div className="subContent1  ">
-                        <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}></img>
+                        <img alt="" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}></img>
                       </div>
 
                       <div className="textAlignLeft subContent2">

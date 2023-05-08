@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Fragment, useEffect, useState } from "react";
-import { createUserWithEmailAndPassword, onAuthStateChanged, reload, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from './firebase-config';
 
 
@@ -39,7 +39,7 @@ export default function Nav(props) {
                 <ul className="row navSub">
                     <Link to={"/"}>
                         <li >
-                            <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg"
+                            <img alt="sorry" src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg"
                                 width="50" height="30"></img>
                         </li>
                     </Link>

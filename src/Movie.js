@@ -1,12 +1,12 @@
 import Nav from "./Nav";
 import "./movie.css"
 import { db } from "./firebase-config";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { getRatingColor } from "./utlities";
-import { onAuthStateChanged, reload, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from './firebase-config';
 import moment from "moment/moment";
 import Footer from "./components/Footer";
@@ -16,10 +16,11 @@ import {
     doc,
     getDocs,
     collection,
-    updateDoc,
     query,
     where
 } from "firebase/firestore";
+
+const collectionRef = collection(db, "favouriteMovies")
 
 export default function Movie() {
 
@@ -28,28 +29,9 @@ export default function Movie() {
     const [documentId, setDocumentId] = useState();
     const [user, setUser] = useState("");
     const [timer, setTimer] = useState(0);
-
     const params = useParams();
-    const collectionRef = collection(db, "favouriteMovies")
 
-    useEffect(() => {
-        const endpoint = `https://api.themoviedb.org/3/movie/${params.Id}?api_key=d908cdc5e4223e480c0497b5a861d68d`
-        //const endpoint = `https://api.themoviedb.org/3/movie/2?api_key=d908cdc5e4223e480c0497b5a861d68d`
-        fetch(endpoint)
-            .then(blob => blob.json())
-            .then(movieApi => {
-                setMovie(movieApi)
-                getMovie()
-                // console.log(movieApi);
-            });
-        const subscriber = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser.uid);
-            //console.log(currentUser.uid);
-        })
-        return subscriber;
-    }, [user]);
-
-    const getMovie = async () => {
+    const getMovie = useCallback(async () => {
         console.log("getMovie was called")
         const movieMatch = query(collectionRef, where("userId", "==", user), where("movieId", "==", parseInt(params.Id)))
         const data = await getDocs(movieMatch);
@@ -68,7 +50,26 @@ export default function Movie() {
                 setTimer(1);
             }, 700);
         }
-    }
+    }, [params.Id, user])
+
+    useEffect(() => {
+        const endpoint = `https://api.themoviedb.org/3/movie/${params.Id}?api_key=d908cdc5e4223e480c0497b5a861d68d`
+        //const endpoint = `https://api.themoviedb.org/3/movie/2?api_key=d908cdc5e4223e480c0497b5a861d68d`
+        fetch(endpoint)
+            .then(blob => blob.json())
+            .then(movieApi => {
+                setMovie(movieApi)
+                getMovie()
+                // console.log(movieApi);
+            });
+        const subscriber = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser.uid);
+            //console.log(currentUser.uid);
+        })
+        return subscriber;
+    }, [user, getMovie, params.Id]);
+
+
 
     const favourite = async (id, movieTitle, movieGenres, movieReleaseDate, moviePosterPath) => {
         if (movieDetails) {
@@ -96,7 +97,7 @@ export default function Movie() {
     if (!movie) {
         return (
             <div>
-                <img className="movieLoading" src={`https://retchhh.files.wordpress.com/2015/03/loading1.gif`}></img>
+                <img alt="" className="movieLoading" src={`https://retchhh.files.wordpress.com/2015/03/loading1.gif`}></img>
             </div>
         );
     }
@@ -119,9 +120,9 @@ export default function Movie() {
             <div>
                 <div >
                     <div className=" gradient"></div>
-                    <img className="coverImage" src={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`} />
+                    <img alt="" className="coverImage" src={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`} />
                 </div>
-                <img className="profileImage" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}></img>
+                <img alt="" className="profileImage" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}></img>
             </div>
 
             <h2 className="movieName">{movie.title}(2023)</h2>
@@ -147,7 +148,7 @@ export default function Movie() {
 
                 <div className={user ? " display heart" : 'hide'}>
                     <div className={timer ? " hide" : "display heartLoading"}>
-                        <img src={`https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif`}></img>
+                        <img alt="" src={`https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif`}></img>
                     </div>
                     <div className={timer ? " display favourites" : 'hide'} >
                         <input id={`${movie.id}`} className="transparent" type="checkbox"></input>
