@@ -1,5 +1,5 @@
-import { Fragment, useEffect, useState } from "react";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase-config';
 import Nav from "../Nav";
 import Footer from "./Footer";
@@ -19,32 +19,7 @@ export default function SignIn() {
 
     const navigate = useNavigate();
 
-
-    useEffect(() => {
-        replaceText()
-    }, [errorMessage]);
-
-    const register = async (e) => {
-        e.preventDefault();
-        setConfirmPassword('');
-        if (registerConfirmPassword !== registerPassword) {
-            setConfirmPassword("Password confirmation do not match")
-            return;
-        }
-        try {
-            const user = await createUserWithEmailAndPassword(
-                auth,
-                registerEmail,
-                registerPassword
-            );
-            setTimeout(() => navigate("/"), 1000);
-            navigate("/Loadingpage");
-        } catch (error) {
-            setErrorMessage(error.message);
-            console.log(error.message);
-        }
-    }
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     function replaceText() {
         var a = errorMessage;
         setEmailError("");
@@ -67,6 +42,53 @@ export default function SignIn() {
             console.log("wrong passcode")
         }
     }
+
+    useEffect(() => {
+        replaceText()
+    }, [errorMessage, replaceText]);
+
+    const register = async (e) => {
+        e.preventDefault();
+        setConfirmPassword('');
+        if (registerConfirmPassword !== registerPassword) {
+            setConfirmPassword("Password confirmation do not match")
+            return;
+        }
+        try {
+            await createUserWithEmailAndPassword(
+                auth,
+                registerEmail,
+                registerPassword
+            );
+            setTimeout(() => navigate("/"), 1000);
+            navigate("/Loadingpage");
+        } catch (error) {
+            setErrorMessage(error.message);
+            console.log(error.message);
+        }
+    }
+
+    // const register = async (e) => {
+    //     e.preventDefault();
+    //     setConfirmPassword('');
+    //     if (registerConfirmPassword !== registerPassword) {
+    //         setConfirmPassword("Password confirmation do not match")
+    //         return;
+    //     }
+    //     try {
+    //         const user = await createUserWithEmailAndPassword(
+    //             auth,
+    //             registerEmail,
+    //             registerPassword
+    //         );
+    //         setTimeout(() => navigate("/"), 1000);
+    //         navigate("/Loadingpage");
+    //     } catch (error) {
+    //         setErrorMessage(error.message);
+    //         console.log(error.message);
+    //     }
+    // }
+
 
     return (
         <div>
@@ -111,6 +133,3 @@ export default function SignIn() {
     )
 }
 
-// type, errorMessage, label, value, onchange - component creation for this
-// loading effect
-// submit while clicking enter (form  onsubmit)

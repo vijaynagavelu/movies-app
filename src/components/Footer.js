@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 export default function Footer() {
     return (
 
@@ -12,7 +10,7 @@ export default function Footer() {
                     <li><a href="/about/staying-in-touch">Contact Us</a></li>
                     <li><a href="/talk">Support Forums</a></li>
                     <li><a href="/documentation/api">API</a></li>
-                    <li><a href="https://status.themoviedb.org/" target="_blank" rel="noopener">System Status</a></li>
+                    <li><a href="https://status.themoviedb.org/" target="_blank" rel="noopener noreferrer">System Status</a></li>
                 </ul>
             </div>
 
@@ -31,7 +29,7 @@ export default function Footer() {
                     <li><a href="/documentation/community/guidelines">Guidelines</a></li>
                     <li><a href="/discuss">Discussions</a></li>
                     <li><a href="/leaderboard">Leaderboard</a></li>
-                    <li><a href="https://twitter.com/themoviedb" target="_blank" rel="noopener">Twitter</a></li>
+                    <li><a href="https://twitter.com/themoviedb" target="_blank" rel="noopener noreferrer">Twitter</a></li>
                 </ul>
             </div>
 

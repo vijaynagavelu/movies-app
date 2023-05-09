@@ -1,11 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth } from '../firebase-config';
-import Nav from "../Nav";
 import "./component.css";
-import { Link, useNavigate } from "react-router-dom";
-import Footer from "./Footer";
-
 
 export default function Input({ type, placeHolder, setItem, label, errorMessage }) {
 

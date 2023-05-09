@@ -1,5 +1,5 @@
-import { Fragment, useEffect, useState } from "react";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase-config';
 import Nav from "../Nav";
 import "./component.css";
@@ -19,10 +19,6 @@ export default function Login() {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        replaceText()
-    }, [errorMessage]);
-
     const login = async (e) => {
         e.preventDefault()
         try {
@@ -40,6 +36,7 @@ export default function Login() {
         }
     }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     function replaceText() {
         var a = errorMessage;
         setDisableError("")
@@ -63,6 +60,11 @@ export default function Login() {
             console.log("down")
         }
     }
+
+
+    useEffect(() => {
+        replaceText()
+    }, [errorMessage, replaceText]);
 
     return (
         <div>
