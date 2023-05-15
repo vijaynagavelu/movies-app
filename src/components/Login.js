@@ -79,7 +79,6 @@ export default function Login() {
                 </p>
 
                 <form onSubmit={login} >
-
                     <div className="flexGrow">
                         <Input placeHolder=" Email" label="Email" setItem={setLoginEmail} errorMessage={emailError} />
                         <Input placeHolder=" Password" type="password" label="Password" setItem={setLoginPassword} errorMessage={passwordError} />
@@ -90,7 +89,6 @@ export default function Login() {
                     <div className={disableError ? "errorMessage" : "transparentMessage"}> {`${disableError ? disableError : ""}`}</div>
 
                     <div className="newUser" >New User?   <Link className="" to={(`/SignIn/`)}> Sign In </Link></div>
-
                 </form>
             </div>
 
