@@ -194,7 +194,7 @@ export default function Movie() {
                     <span>Director</span>
                 </div>
                 <div>
-                    <h4>Zak Olkewicz</h4>
+                    <h4>Zak Olkewic</h4>
                     <span>Screenplay</span>
                 </div>
             </div>
