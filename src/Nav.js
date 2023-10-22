@@ -1,72 +1,81 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from './firebase-config';
+export default function Pagination({ pageNumber, setPageNumber, totalPages }) {
 
+    const tp = totalPages;
 
-
-
-export default function Nav(props) {
-
-    const [user, setUser] = useState({});
-    const navigate = useNavigate();
-
-
-    useEffect(() => {
-        const subscriber = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-        })
-        return subscriber;
-    }, [])
-
-    const logout = async () => {
-        await signOut(auth);
-        document.location.reload();
-        window.location.reload();
-        navigate('');
-    }
-
-    function profileLetter(letter) {
-        if (letter) {
-            return ((letter?.charAt(0)).toUpperCase());
+    function addCounter() {
+        if (pageNumber < totalPages) {
+            setPageNumber(pageNumber + 1);
         }
     }
 
-    return (
-        <nav>
-            <ul className="row navBar">
-                <li className="fontSize22px">🧮</li>
-                <ul className="row navSub">
-                    <Link to={"/"}>
-                        <li >
-                            <img alt="sorry" src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg"
-                                width="50" height="30"></img>
+    function delCounter() {
+        if (pageNumber > 1) {
+            setPageNumber(pageNumber - 1);
+        }
+    }
+
+    if (!totalPages) {
+        return;
+    }
+
+    if (pageNumber > 0 && pageNumber < tp - 4 && totalPages) {
+        return (
+            <>
+                <div>
+                    <ul className="row paginationBar">
+                        <li onClick={delCounter}
+                        >{'<'}
                         </li>
-                    </Link>
+                        <li className={(pageNumber === 1 ? "hide" : 'display')} onClick={() => setPageNumber(pageNumber - 1)}
+                        >{pageNumber - 1}</li>
+                        <li className="highlight" >{pageNumber}</li>
+                        <li onClick={() => setPageNumber(pageNumber + 1)}
+                        >{pageNumber + 1}</li>
+                        <li onClick={() => setPageNumber(pageNumber + 2)}
+                        >{pageNumber + 2}</li>
+                        <li onClick={() => setPageNumber(pageNumber + 3)}
+                        >{pageNumber + 3}</li>
+                        <li className={(pageNumber < 1 ? "hide" : 'display')} onClick={() => setPageNumber(pageNumber + 4)}
+                        >{pageNumber + 4}</li>
+                        <li>. . . .</li>
+                        <li onClick={() => setPageNumber(totalPages)}
+                        >{totalPages}</li>
+                        <li onClick={addCounter}>{'>'}</li>
+                    </ul>
+                </div>
+            </>
+        )
+    }
 
-                    <Link to={"/Favourites"}>
-                        <div className={user ? " display favourites" : 'hide'} >
-                            <input className="transparent" type="checkbox"></input>
-                            <label
-                                className={1 ? 'redHeart' : " greyHeart"} >❤</label>
-                        </div>
-                    </Link>
-
-                    <li  >🔔 </li>
-
-                    <Link className={`link  ${user ? "hide" : " "}`} to={"/Login"}>
-                        <li className="loginSignIn" >Login</li>
-                    </Link>
-                    <Link className={`link  ${user ? "hide" : " "}`} to={"/SignIn"}>
-                        <li className="loginSignIn" >Join TMDB </li>
-                    </Link>
-
-                    <li className={`userAlphabet  ${user ? "" : " hide"}`}>{user ? profileLetter(user.email) : ""} </li>
-                    <li className={`logOut  ${user ? "" : " hide"}`} onClick={logout}>{user ? "Sign Out" : ""} </li>
-
-                    <li>🔍</li>
-                </ul>
-            </ul>
-        </nav >
-    )
+    if (pageNumber >= tp - 4 && totalPages) {
+        return (
+            <>
+                <div>
+                    <ul className="row paginationBar">
+                        <li onClick={delCounter}
+                        >{'<'}
+                        </li>
+                        <li onClick={() => setPageNumber(1)}>{1}</li>
+                        <li>. . . .</li>
+                        <li className={(pageNumber === tp - 4 ? "highlight" : 'display')} onClick={() => setPageNumber(tp - 4)}>
+                            {tp - 4}</li>
+                        <li className={(pageNumber === tp - 3 ? "highlight" : 'display')} onClick={() => setPageNumber(tp - 3)}>
+                            {tp - 3}</li>
+                        <li className={(pageNumber === tp - 2 ? "highlight" : 'display')} onClick={() => setPageNumber(tp - 2)}>
+                            {tp - 2}</li>
+                        <li className={(pageNumber === tp - 1 ? "highlight" : 'display')} onClick={() => setPageNumber(tp - 1)}>
+                            {tp - 1}</li>
+                        <li className={(pageNumber === totalPages ? "highlight" : 'display')} onClick={() => setPageNumber(totalPages)}>{totalPages}</li>
+                        <li onClick={addCounter}>{'>'}</li>
+                    </ul>
+                </div>
+            </>
+        )
+    }
 }
+
+
+
+
+
+
