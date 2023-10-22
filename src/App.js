@@ -13,33 +13,14 @@ export default function App() {
 
 
   useEffect(() => {
-    const endpoint = `https://flipkart-email-mock.vercel.app/?page=${pageNumber}`;
+    const endpoint = `https://api.themoviedb.org/3/trending/movie/week?api_key=d908cdc5e4223e480c0497b5a861d68d&page=${pageNumber}`;
     fetch(endpoint)
       .then(blob => blob.json())
       .then(api => {
-        console.log(api.list)
-        setMovies(api.list)
-        setTotalPages(20)
+        setMovies(api.results)
+        setTotalPages(api.total_pages)
       });
   }, [pageNumber]);
-
-  function formatUnixTimestamp(timestamp) {
-    const date = new Date(timestamp);
-    const day = date.getDate();
-    const month = date.getMonth() + 1; // Months are zero-based
-    const year = date.getFullYear();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const amOrPm = hours >= 12 ? 'pm' : 'am';
-
-    // Adjust hours to 12-hour format
-    const formattedHours = hours % 12 || 12;
-
-    const formattedDate = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
-    const formattedTime = `${formattedHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}${amOrPm}`;
-
-    return `${formattedDate} ${formattedTime}`;
-  }
 
 
 
@@ -70,15 +51,15 @@ export default function App() {
                   <div className="row content">
                     <div className={movies.length === 0 ? " hide" : 'row  '}>
 
-                      <div className="subContent1">
-                        F
+                      <div className="subContent1  ">
+                        <img alt="" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}></img>
                       </div>
 
                       <div className="textAlignLeft subContent2">
-                        <span className="releaseDate fontSize14px">From:{movie.from.name} {movie.from.email}</span>
-                        <span className="movieTitle">Subject {movie.subject}</span>
-                        <p className="overview fontSize13px">{movie.short_description}</p>
-                        <span className="releaseDate fontSize14px">{formatUnixTimestamp(movie.date)}</span>
+
+                        <h3 className="movieTitle">{movie.title}</h3>
+                        <span className="releaseDate fontSize14px">{movie.release_date}</span>
+                        <p className="overview fontSize13px">{movie.overview}</p>
                       </div>
                     </div>
                   </div>
